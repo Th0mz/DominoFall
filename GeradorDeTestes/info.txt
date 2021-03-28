@@ -1,0 +1,2 @@
+> Compilação: g++ -O3 -Wall -o randomDAG randomDAG.cpp -lm
+> Execução: ./randomDAG N p [seed] > testfile (podem variar os parâmetros e gerar vários ficheiros de teste)
