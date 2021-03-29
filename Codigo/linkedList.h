@@ -20,7 +20,7 @@ typedef struct linkedList {
 
 void initList(LinkedList *lista);
 void push(LinkedList *lista, int elemento);
-void print(LinkedList *lista);
+void print(LinkedList lista);
 
 void destroy(LinkedList *lista);
 

@@ -1,6 +1,5 @@
 #include "linkedList.h"
 
-/* Funcoes sobre lista jogos */
 void initList(LinkedList *lista)
 {
     /* Inicializa a lista como sendo uma lista vazia */
@@ -16,14 +15,14 @@ void push(LinkedList *lista, int elemento) {
 
     /* Definir novo_node */
     novo_node->elemento = elemento;
-
     novo_node->proximo = lista->inicio;
+    
     lista->inicio = novo_node;
 
 }
 
 void destroy(LinkedList *lista) {
-    /* Liberta memoria de uma lista de jogos */
+    /* Liberta memoria de uma lista ligada */
     node *node, *proximo_node;
 
     node = lista->inicio;
@@ -35,10 +34,12 @@ void destroy(LinkedList *lista) {
     }
 }
 
-void print(LinkedList *lista) {
-    /* Da display da lista no standard output */
+void print(LinkedList lista) {
+    /* Da display da lista no stdout */
     node *i;
 
-    for (i = lista->inicio; i != NULL; i = i->proximo)
-        printf("%d\n", i->elemento);
+    for (i = lista.inicio; i != NULL; i = i->proximo)
+        printf("%d ", i->elemento + 1);
+
+    printf("\n");
 }
