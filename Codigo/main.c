@@ -49,5 +49,6 @@ int main() {
     for (i = 0; i < graph.vertices; i++)
         destroy(&(graph.graph[i]));
 
+    free(graph.graph);
     return 0;   
 }
