@@ -1,56 +1,44 @@
 #include "linkedList.h"
 
-node* pop(node *inicio) {
-    node *elemento_removido;
-    /* Remove o primeiro elemento da lista */
-    if (inicio == NULL)
-        return NULL;
-
-    /* Guardadar elemento removido para dar free */
-    elemento_removido = inicio;
-
-    /* Atualizar a cabeca da lista */
-    inicio = inicio->proximo;
-
-    free(elemento_removido);
-    return inicio;
+/* Funcoes sobre lista jogos */
+void initList(LinkedList *lista)
+{
+    /* Inicializa a lista como sendo uma lista vazia */
+    lista->inicio = NULL;
 }
 
-node* push(node *inicio, int elemento) {
+void push(LinkedList *lista, int elemento) {
     /* Adiciona um novo elemento ao inicio da lista */
-    node *novo_no;
+    node *novo_node;
 
     /* Alocar memoria */
-    novo_no = (node*) malloc(sizeof(node));
+    novo_node = (node*) malloc(sizeof(node));
 
-    /* Definir novo_no */
-    novo_no->elemento = elemento;
-    novo_no->proximo = inicio;
+    /* Definir novo_node */
+    novo_node->elemento = elemento;
 
-    return novo_no;
+    novo_node->proximo = lista->inicio;
+    lista->inicio = novo_node;
+
 }
 
-node* destroy(node *inicio) {
-    /* Da free de todos os nos da lista */
-    node *node_free;
+void destroy(LinkedList *lista) {
+    /* Liberta memoria de uma lista de jogos */
+    node *node, *proximo_node;
 
-    if (inicio == NULL)
-        return NULL;
+    node = lista->inicio;
 
-    while(inicio != NULL) {
-        node_free = inicio;
-        inicio = inicio->proximo;
-
-        free(node_free);
+    while(node != NULL) {
+        proximo_node = node->proximo;
+        free(node);
+        node = proximo_node;
     }
-
-    return NULL;
 }
 
-void print(node *inicio) {
+void print(LinkedList *lista) {
     /* Da display da lista no standard output */
     node *i;
 
-    for (i = inicio; i != NULL; i = i->proximo)
+    for (i = lista->inicio; i != NULL; i = i->proximo)
         printf("%d\n", i->elemento);
 }
