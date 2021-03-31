@@ -1,45 +1,71 @@
 #include "linkedList.h"
 
-void initList(LinkedList *lista)
+void initList(LinkedList *list)
 {
-    /* Inicializa a lista como sendo uma lista vazia */
-    lista->inicio = NULL;
+    /* Initialization of the list as a empty list */
+    list->head = NULL;
 }
 
-void push(LinkedList *lista, int elemento) {
-    /* Adiciona um novo elemento ao inicio da lista */
-    node *novo_node;
+int pop(LinkedList *list) {
+    /* Removes the first element in the list */
+    node *removedElement;
+    int value;
 
-    /* Alocar memoria */
-    novo_node = (node*) malloc(sizeof(node));
+    if (list->head == NULL)
+        return 0;
 
-    /* Definir novo_node */
-    novo_node->elemento = elemento;
-    novo_node->proximo = lista->inicio;
+    /* Store locally the fist element so it can be freed */
+    removedElement = list->head;
+    value = removedElement->value;
+
+    /* Update list head */
+    list->head = list->head->next;
+
+    free(removedElement);
+    return value;
+}
+
+void push(LinkedList *list, int value) {
+    /* Adds a new element to the begining of the list */
+    node *newNode;
+
+    /* Allocate memory */
+    newNode = (node*) malloc(sizeof(node));
+
+    /* Define newNode */
+    newNode->value = value;
+    newNode->next = list->head;
     
-    lista->inicio = novo_node;
+    list->head = newNode;
 
 }
 
-void destroy(LinkedList *lista) {
-    /* Liberta memoria de uma lista ligada */
-    node *node, *proximo_node;
+void destroyList(LinkedList *list) {
+    /* Frees all the memory associated with the list */
+    node *node, *nextNode;
 
-    node = lista->inicio;
+    node = list->head;
 
     while(node != NULL) {
-        proximo_node = node->proximo;
+        nextNode = node->next;
         free(node);
-        node = proximo_node;
+        node = nextNode;
     }
 }
 
-void print(LinkedList lista) {
-    /* Da display da lista no stdout */
+int isEmpty(LinkedList list) {
+    if (list.head == NULL)
+        return 1;
+    else
+        return 0;
+}
+
+void print(LinkedList list) {
+    /* Display list */
     node *i;
 
-    for (i = lista.inicio; i != NULL; i = i->proximo)
-        printf("%d ", i->elemento + 1);
+    for (i = list.head; i != NULL; i = i->next)
+        printf("%d ", i->value + 1);
 
     printf("\n");
 }

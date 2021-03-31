@@ -1,27 +1,29 @@
-#ifndef _LISTA_LIGADA_
-#define _LISTA_LIGADA_
+#ifndef _LINKEDLIST_
+#define _LINKEDLIST_
 
 #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct node
 {
-    struct node *proximo;
-    int elemento;
+    struct node *next;
+    int value;
 } node;
 
 
 typedef struct linkedList {
 
-    node *inicio;
+    node *head;
 } LinkedList;
 
-/* Declaracao de funcoes */
+/* Function Declaration */
 
-void initList(LinkedList *lista);
-void push(LinkedList *lista, int elemento);
-void print(LinkedList lista);
+void initList(LinkedList *list);
+int pop(LinkedList *list);
+void push(LinkedList *list, int value);
+int isEmpty(LinkedList list);
+void print(LinkedList list);
 
-void destroy(LinkedList *lista);
+void destroyList(LinkedList *list);
 
 #endif
