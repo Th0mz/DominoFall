@@ -37,7 +37,7 @@ int pop(LinkedList *list) {
     int value;
 
     if (list->head == NULL)
-        return 0;
+        return -1;
 
     /* Store locally the fist element so it can be freed */
     removedElement = list->head;
@@ -110,10 +110,6 @@ typedef struct graph {
 
     /* Functions */
 
-/* Global graph */
-Graph graph;
-
-
 void initGraph(Graph *graph, int vertices, int edges) {
     /* Initialization of the graph properties */
     int i;
@@ -182,18 +178,18 @@ void destroyGraph(Graph *graph) {
 
 /* ------------ MAIN ------------ */
 
-void processInput() {
+void processInput(Graph *graph) {
     int vertices, edges, i;
     scanf("%d %d", &vertices, &edges);
 
-    initGraph(&graph, vertices, edges);
+    initGraph(graph, vertices, edges);
 
     for (i = 0; i < edges; i++) {
         int u, v;
         scanf("%d %d", &u, &v);
 
-        push(&(graph.outGoingEdges[u - 1]), v - 1);
-        push(&(graph.inGoingEdges[v - 1]), u - 1);
+        push(&(graph->outGoingEdges[u - 1]), v - 1);
+        push(&(graph->inGoingEdges[v - 1]), u - 1);
     }
 
 }
@@ -241,8 +237,9 @@ int largestPath(Graph graph, int *sources, int sourcesSize) {
     /*  */
     for (i = 0; i < sourcesSize; i++) {
         if (color[sources[i]] == 0) {
-            /* Insert the root in the stack */
+            /* Insert the starting vertice in the stack */
             push(&stack, sources[i]);
+            
             while (isEmpty(stack) != TRUE) {
                 visitingVertice = stack.head->value;
 
@@ -299,9 +296,13 @@ int largestPath(Graph graph, int *sources, int sourcesSize) {
 
 
 int main() {
+    
     int k, l;
+    
+    Graph graph;
     int *sources;  
-    processInput();
+    
+    processInput(&graph);
 
     k = getNumberSources(graph);
     sources = getSources(graph, k);
