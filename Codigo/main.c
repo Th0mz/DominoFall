@@ -194,7 +194,7 @@ void processInput(Graph *graph) {
 
 }
 
-int largestPath(Graph graph, int *sources, int sourcesSize) {
+int calculateLargestPath(Graph graph, int *sources, int sourcesSize) {
     /* Calculates the overall largest path in the hole graph */
     int i;
 
@@ -205,10 +205,11 @@ int largestPath(Graph graph, int *sources, int sourcesSize) {
         - GRAY : Being processed
         - BLACK : Processed
     */
-    int color[graph.vertices];
+
+    char *color = (char*) malloc(sizeof(char) * graph.vertices);
 
     /* longestPath[v] = longest path from v */
-    int longestPath[graph.vertices];
+    int *longestPath = (int*) malloc(sizeof(int) * graph.vertices);
     int overallLongestPath = - INFINITY;
 
     /* Current vertice that is being process */
@@ -291,6 +292,9 @@ int largestPath(Graph graph, int *sources, int sourcesSize) {
             overallLongestPath = longestPath[sources[i]];
     }
 
+    free(color);
+    free(longestPath);
+
     return overallLongestPath + 1;  
 }
 
@@ -307,26 +311,8 @@ int main() {
     k = getNumberSources(graph);
     sources = getSources(graph, k);
 
-    l = largestPath(graph, sources, k);
+    l = calculateLargestPath(graph, sources, k);
     printf("%d %d\n", k, l);
-
-
-    /*
-    DEBUG : 
-
-    printf("Sources:\n");
-    for (i = 0; i < k; i++)
-        printf("%d ", sources[i] + 1);
-
-    printf("\n");
-
-    printf("Vertices:\n");
-    for (i = 0; i < graph.vertices; i ++){
-        printf("i = %d   ", i + 1);
-        print(graph.outGoingEdges[i]); 
-    }
-
-    */
 
     destroyGraph(&graph);
     free(sources);
