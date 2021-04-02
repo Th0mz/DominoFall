@@ -16,39 +16,53 @@ void initGraph(Graph *graph, int vertices, int edges) {
     }
 }
 
-int getNumberSources(Graph graph) {
-    /* Gets the total number of sources in the graph */
-    int i;
-    int numberOfSources = 0;
-
-    for (i = 0; i < graph.vertices; i++) {
-        if (graph.inGoingEdges[i].head == NULL) {
-            numberOfSources++;
-        }
-            
-    }
-    
-    return numberOfSources;
+LinkedList getAdj(Graph graph, int vertice) {
+    return graph.outGoingEdges[vertice];
 }
 
-int* getSources(Graph graph, int numberOfSources) {
+int* getSources(Graph graph, int *numSources) {
+    /* Gets all vertices that are sources */
     int i;
-    int sourceIndex = 0;
-    int *sources = (int*) malloc(sizeof(int) * numberOfSources);
 
-    for (i = 0; sourceIndex < numberOfSources; i++) {
-        if (graph.inGoingEdges[i].head == NULL) {
+    /* numIncomingEdges[v] = number of incoming edges of v */
+    int *numIncomingEdges = (int*) malloc(sizeof(int) * graph.vertices);
+
+    *numSources = graph.vertices;
+    LinkedList adjencies;
+    node *adjVertice;
+
+    /* Calculate the number of incoming edges for all vertices */
+    for (i = 0; i < graph.vertices; i++) {
+
+        adjencies = getAdj(graph, i);
+        adjVertice = adjencies.head;
+        
+        for (; adjVertice != NULL; adjVertice = adjVertice->next) {
+
+            if (numIncomingEdges[adjVertice->value] == 0) {
+                /* The vertice adjacent vertice is not a source (was a income edge) */
+                (*numSources)--;
+            }
+            
+            numIncomingEdges[adjVertice->value]++;
+        }
+    }
+
+    /* Check which vertices are sources  */
+    int sourceIndex = 0;
+    int *sources = (int*) malloc(sizeof(int) * (*numSources));
+
+    for (i = 0; sourceIndex < (*numSources); i++) {
+        if (numIncomingEdges[i] == 0) {
             sources[sourceIndex] = i;
             sourceIndex++;
         }
     }
 
+    free(numIncomingEdges); 
     return sources;
 }
 
-LinkedList getAdj(Graph graph, int vertice) {
-    return graph.outGoingEdges[vertice];
-}
 
 
 void destroyGraph(Graph *graph) {

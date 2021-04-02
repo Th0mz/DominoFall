@@ -1,14 +1,180 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "linkedList.h"
-#include "graph.h"
-
 #define TRUE 1
 #define WHITE 0
 #define GRAY 1
 #define BLACK 2
 #define INFINITY 1
+
+
+/* ------------ LINKEDLIST ------------ */
+    /* Structures */
+
+typedef struct node
+{
+    struct node *next;
+    int value;
+} node;
+
+
+typedef struct linkedList {
+
+    node *head;
+} LinkedList;
+
+    /* Functions */
+
+void initList(LinkedList *list)
+{
+    /* Initialization of the list as a empty list */
+    list->head = NULL;
+}
+
+int pop(LinkedList *list) {
+    /* Removes the first element in the list */
+    node *removedElement;
+    int value;
+
+    if (list->head == NULL)
+        return -1;
+
+    /* Store locally the fist element so it can be freed */
+    removedElement = list->head;
+    value = removedElement->value;
+
+    /* Update list head */
+    list->head = list->head->next;
+
+    free(removedElement);
+    return value;
+}
+
+void push(LinkedList *list, int value) {
+    /* Adds a new element to the begining of the list */
+    node *newNode;
+
+    /* Allocate memory */
+    newNode = (node*) malloc(sizeof(node));
+
+    /* Define newNode */
+    newNode->value = value;
+    newNode->next = list->head;
+    
+    list->head = newNode;
+
+}
+
+void destroyList(LinkedList *list) {
+    /* Frees all the memory associated with the list */
+    node *node, *nextNode;
+
+    node = list->head;
+
+    while(node != NULL) {
+        nextNode = node->next;
+        free(node);
+        node = nextNode;
+    }
+}
+
+int isEmpty(LinkedList list) {
+    if (list.head == NULL)
+        return 1;
+    else
+        return 0;
+}
+
+
+
+/* ------------ GRAPH ------------ */
+    /* Structure */
+
+typedef struct graph {
+    /* Graph representation with adjency list */
+
+    int vertices, edges;
+    LinkedList *outGoingEdges;
+} Graph;
+
+    /* Functions */
+
+void initGraph(Graph *graph, int vertices, int edges) {
+    /* Initialization of the graph properties */
+    int i;
+
+    graph->vertices = vertices;
+    graph->edges = edges;
+
+    graph->outGoingEdges = (LinkedList *) malloc(sizeof(LinkedList) * vertices);
+
+    for (i = 0; i < vertices; i++) {
+        initList(&(graph->outGoingEdges[i]));
+    }
+}
+
+LinkedList getAdj(Graph graph, int vertice) {
+    return graph.outGoingEdges[vertice];
+}
+
+int* getSources(Graph graph, int *numSources) {
+    /* Gets all vertices that are sources */
+    int i;
+
+    /* numIncomingEdges[v] = number of incoming edges of v */
+    int *numIncomingEdges = (int*) malloc(sizeof(int) * graph.vertices);
+
+    *numSources = graph.vertices;
+    LinkedList adjencies;
+    node *adjVertice;
+
+    /* Calculate the number of incoming edges for all vertices */
+    for (i = 0; i < graph.vertices; i++) {
+
+        adjencies = getAdj(graph, i);
+        adjVertice = adjencies.head;
+        
+        for (; adjVertice != NULL; adjVertice = adjVertice->next) {
+
+            if (numIncomingEdges[adjVertice->value] == 0) {
+                /* The vertice adjacent vertice is not a source (was a income edge) */
+                (*numSources)--;
+            }
+            
+            numIncomingEdges[adjVertice->value]++;
+        }
+    }
+
+    /* Check which vertices are sources  */
+    int sourceIndex = 0;
+    int *sources = (int*) malloc(sizeof(int) * (*numSources));
+
+    for (i = 0; sourceIndex < (*numSources); i++) {
+        if (numIncomingEdges[i] == 0) {
+            sources[sourceIndex] = i;
+            sourceIndex++;
+        }
+    }
+
+    free(numIncomingEdges); 
+    return sources;
+}
+
+
+void destroyGraph(Graph *graph) {
+    /* Frees the memory associated with the graph */
+    int i;
+    
+    for (i = 0; i < graph->vertices; i++){
+        destroyList(&(graph->outGoingEdges[i]));
+    }    
+
+    free(graph->outGoingEdges);
+}
+
+
+
+/* ------------ MAIN ------------ */
 
 void processInput(Graph *graph) {
     

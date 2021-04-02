@@ -15,9 +15,8 @@ typedef struct graph {
 
 /* Function Declaration */
 void initGraph(Graph *graph, int vertices, int edges);
-int getNumberSources(Graph graph);
-int* getSources(Graph graph, int numberOfSources);
 LinkedList getAdj(Graph graph, int vertice);
+int* getSources(Graph graph, int *numSources);
 
 void destroyGraph(Graph *graph);
 
