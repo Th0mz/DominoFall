@@ -117,6 +117,7 @@ LinkedList getAdj(Graph graph, int vertice) {
     return graph.outGoingEdges[vertice];
 }
 
+
 int* getSources(Graph graph, int *numSources) {
     /* Gets all vertices that are sources */
     int i;

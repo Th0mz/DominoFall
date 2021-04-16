@@ -29,11 +29,11 @@ do
 	echo  - Probability = $prob
 
 	# Generate a new DAG
-	../GeradorDeTestes/randomDAG $numnodes 0$prob > testfile
+	#../GeradorDeTestes/randomDAG $numnodes 0$prob > ./testes/$numnodes-$prob 
 
 	# Run the program with the calculated DAG
-	printf "  Output : "
-	./a.out < testfile
+	#printf "  Output : "
+	./a.out < ./testes/$numnodes-$prob > ./resultados/$numnodes-$prob
 
 	done
 done
