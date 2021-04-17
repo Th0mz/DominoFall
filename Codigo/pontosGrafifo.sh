@@ -41,6 +41,10 @@ do
     ../GeradorDeTestes/randomDAG $nodes 0.4 > ./testfile
 
 	echo =======: nodes $nodes :======= 
+	# Obter a primeira lina do testfile V E e somar os seus elementos obtendo V + E
+	echo -n V + E =  
+	python3 -c "firstline = open(\"./testfile\").readline().split() ; print(\" \" + str(int(firstline[0]) + int(firstline[1])))"
+
 	# Correr codigo com o grafo gerado dando display do tempo
 	time ./a.out < ./testfile
 	echo ===========================
